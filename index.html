@@ -185,7 +185,7 @@
                 </div>
                 <div class="form-group">
                     <label for="phone">Ваш номер телефону</label>
-                    <input type="tel" id="phone" name="phone" required pattern="\d{9}" placeholder="+380">
+                    <input type="tel" id="phone" name="phone" required maxlength="12">
                 </div>
                 <button type="submit" class="submit-btn">Отримати репетитора</button>
             </div>
@@ -205,6 +205,33 @@
         const classInput = document.getElementById('classInput');
         const taskInput = document.getElementById('taskInput');
         const levelInput = document.getElementById('levelInput');
+
+        // Телефонне поле
+        const phoneInput = document.getElementById('phone');
+        const phonePrefix = '+380';
+
+        // Встановити значення за замовчуванням
+        phoneInput.value = phonePrefix;
+
+        // Заборонити стирати префікс +380
+        phoneInput.addEventListener('input', (e) => {
+            if (!phoneInput.value.startsWith(phonePrefix)) {
+                phoneInput.value = phonePrefix;
+            }
+        });
+
+        // Перемістити курсор після префіксу при фокусі
+        phoneInput.addEventListener('focus', (e) => {
+            if (phoneInput.value === phonePrefix) {
+                phoneInput.setSelectionRange(phonePrefix.length, phonePrefix.length);
+            }
+        });
+
+        phoneInput.addEventListener('click', (e) => {
+            if (phoneInput.selectionStart < phonePrefix.length) {
+                phoneInput.setSelectionRange(phonePrefix.length, phonePrefix.length);
+            }
+        });
 
         function showStep(stepIndex) {
             steps.forEach((step, index) => {
