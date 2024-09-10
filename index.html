@@ -129,7 +129,13 @@
             <div class="progress" id="progressBar"></div>
         </div>
 
-        <form id="quizForm">
+        <!-- Інтеграція з Formspree -->
+        <form id="quizForm" action="https://formspree.io/f/xdknvnop" method="POST">
+            <!-- Поля для зберігання відповідей -->
+            <input type="hidden" name="class" id="classInput">
+            <input type="hidden" name="task" id="taskInput">
+            <input type="hidden" name="level" id="levelInput">
+
             <!-- Крок 1 -->
             <div class="form-step active" id="step1">
                 <div class="form-group">
@@ -195,6 +201,11 @@
         const backButton = document.getElementById('backButton');
         let currentStep = 0;
 
+        // Поля для збереження відповідей
+        const classInput = document.getElementById('classInput');
+        const taskInput = document.getElementById('taskInput');
+        const levelInput = document.getElementById('levelInput');
+
         function showStep(stepIndex) {
             steps.forEach((step, index) => {
                 step.classList.toggle('active', index === stepIndex);
@@ -208,6 +219,15 @@
 
         document.querySelectorAll('button[data-value]').forEach(button => {
             button.addEventListener('click', () => {
+                const step = button.closest('.form-step');
+                if (step.id === 'step1') {
+                    classInput.value = button.getAttribute('data-value');
+                } else if (step.id === 'step2') {
+                    taskInput.value = button.getAttribute('data-value');
+                } else if (step.id === 'step3') {
+                    levelInput.value = button.getAttribute('data-value');
+                }
+
                 currentStep++;
                 if (currentStep < steps.length) {
                     showStep(currentStep);
@@ -223,7 +243,6 @@
         });
 
         document.getElementById('quizForm').addEventListener('submit', (e) => {
-            e.preventDefault();
             alert('Дякуємо за заповнення форми! Ми з вами зв\'яжемося.');
         });
 
